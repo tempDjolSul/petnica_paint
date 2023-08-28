@@ -1,4 +1,4 @@
-﻿Paint
+﻿Paint!
 
 
 Minimum
