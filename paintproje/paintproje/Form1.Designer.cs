@@ -106,6 +106,7 @@
             this.BtnPaint.TabIndex = 5;
             this.BtnPaint.Text = "paint";
             this.BtnPaint.UseVisualStyleBackColor = true;
+            this.BtnPaint.Click += new System.EventHandler(this.BtnPaint_Click);
             // 
             // BtnEllipse
             // 
@@ -175,8 +176,9 @@
             this.Pic.Size = new System.Drawing.Size(814, 513);
             this.Pic.TabIndex = 1;
             this.Pic.TabStop = false;
-            this.Pic.Click += new System.EventHandler(this.pictureBox1_Click);
+            this.Pic.Click += new System.EventHandler(this.Pic_Click);
             this.Pic.Paint += new System.Windows.Forms.PaintEventHandler(this.Pic_Paint);
+            this.Pic.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Pic_MouseClick);
             this.Pic.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Pic_MouseDown);
             this.Pic.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Pic_MouseMove);
             this.Pic.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Pic_MouseUp);

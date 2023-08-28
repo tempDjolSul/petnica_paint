@@ -22,6 +22,8 @@ namespace paintproje
         Brush tacka = new SolidBrush(Color.Black);
         int index;
         int x, y, sx, sy, cx, cy;
+        Color New_Color = Color.Firebrick;
+
        
         
 
@@ -93,6 +95,61 @@ namespace paintproje
 
         }
 
+        private void BtnPaint_Click(object sender, EventArgs e)
+        {
+            index = 6; 
+        }
+        
+        static Point set_Point(PictureBox pb, Point pt)
+        {
+            float px = 1f * pb.Width / pb.Width;
+            float py = 1f * pb.Height / pb.Height;
+            return new Point((int)(pt.X * px), (int)(pt.Y * py));
+        }
+
+        private void Validate(Bitmap bm, Stack<Point>sp,int x, int y, Color Old_Color, Color New_Color)
+        {
+            Color cx = bm.GetPixel(x, y);
+            if (cx == Old_Color)
+            {
+                //greska kad ostane predugo (system out of memory excep)
+                sp.Push(new Point(x, y));
+                    bm.SetPixel(x, y, New_Color);
+            }
+        }
+        
+        public void Fill(Bitmap bm, int x, int y, Color New_Clr)
+        {
+            Color Old_Color = bm.GetPixel(x, y);
+            Stack< Point > pixel = new Stack<Point>();
+            pixel.Push(new Point(x, y));
+            bm.SetPixel(x, y, New_Clr);
+            if(Old_Color==New_Clr) { return; }
+            while (pixel.Count > 0)
+            {
+                Point pt = (Point)pixel.Pop();
+                if (pt.X > 0 && pt.Y > 0 && pt.X < bm.Width - 1 && pt.Y < bm.Height - 1)
+                {
+                    Validate(bm, pixel, pt.X - 1, pt.Y, Old_Color, New_Clr);
+                    Validate(bm, pixel, pt.X, pt.Y-1, Old_Color, New_Clr);
+                    Validate(bm, pixel, pt.X + 1, pt.Y, Old_Color, New_Clr);
+                    Validate(bm, pixel, pt.X , pt.Y+1, Old_Color, New_Clr);
+                }
+
+            }
+        }
+
+        private void Pic_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (index == 6)
+            {
+                Point point = set_Point(Pic, e.Location);
+                //MessageBox.Show(cx + " " + cy);
+                Fill(bm, point.X, point.Y, New_Color);
+
+            }
+        }
+
         private void BtnPencil_Click(object sender, EventArgs e)
         {
             index = 1;
@@ -161,9 +218,9 @@ namespace paintproje
             index = 3;
         }
 
-        private void pictureBox1_Click(object sender, EventArgs e)
+        private void Pic_Click(object sender, EventArgs e)
         {
-
+            
         }
 
         
