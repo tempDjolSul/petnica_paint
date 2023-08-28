@@ -34,7 +34,7 @@
             this.BtnColor = new System.Windows.Forms.Button();
             this.BtnPaint = new System.Windows.Forms.Button();
             this.BtnEllipse = new System.Windows.Forms.Button();
-            this.BtnReactangle = new System.Windows.Forms.Button();
+            this.BtnRectangle = new System.Windows.Forms.Button();
             this.BtnLine = new System.Windows.Forms.Button();
             this.BtnClear = new System.Windows.Forms.Button();
             this.BtnSave = new System.Windows.Forms.Button();
@@ -51,7 +51,7 @@
             this.panel1.Controls.Add(this.BtnColor);
             this.panel1.Controls.Add(this.BtnPaint);
             this.panel1.Controls.Add(this.BtnEllipse);
-            this.panel1.Controls.Add(this.BtnReactangle);
+            this.panel1.Controls.Add(this.BtnRectangle);
             this.panel1.Controls.Add(this.BtnLine);
             this.panel1.Controls.Add(this.BtnClear);
             this.panel1.Controls.Add(this.BtnSave);
@@ -83,7 +83,7 @@
             this.BtnEraser.TabIndex = 7;
             this.BtnEraser.Text = "eraser";
             this.BtnEraser.UseVisualStyleBackColor = true;
-            
+            this.BtnEraser.MouseClick += new System.Windows.Forms.MouseEventHandler(this.BtnEraser_MouseClick);
             // 
             // BtnColor
             // 
@@ -117,17 +117,19 @@
             this.BtnEllipse.TabIndex = 4;
             this.BtnEllipse.Text = "Ellipse";
             this.BtnEllipse.UseVisualStyleBackColor = true;
+            this.BtnEllipse.MouseClick += new System.Windows.Forms.MouseEventHandler(this.BtnEllipse_MouseClick);
             // 
-            // BtnReactangle
+            // BtnRectangle
             // 
-            this.BtnReactangle.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnReactangle.ForeColor = System.Drawing.SystemColors.Control;
-            this.BtnReactangle.Location = new System.Drawing.Point(309, 3);
-            this.BtnReactangle.Name = "BtnReactangle";
-            this.BtnReactangle.Size = new System.Drawing.Size(65, 49);
-            this.BtnReactangle.TabIndex = 3;
-            this.BtnReactangle.Text = "Reactangle";
-            this.BtnReactangle.UseVisualStyleBackColor = true;
+            this.BtnRectangle.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnRectangle.ForeColor = System.Drawing.SystemColors.Control;
+            this.BtnRectangle.Location = new System.Drawing.Point(309, 3);
+            this.BtnRectangle.Name = "BtnRectangle";
+            this.BtnRectangle.Size = new System.Drawing.Size(65, 49);
+            this.BtnRectangle.TabIndex = 3;
+            this.BtnRectangle.Text = "Rectangle";
+            this.BtnRectangle.UseVisualStyleBackColor = true;
+            this.BtnRectangle.Click += new System.EventHandler(this.BtnRectangle_Click);
             // 
             // BtnLine
             // 
@@ -139,6 +141,7 @@
             this.BtnLine.TabIndex = 2;
             this.BtnLine.Text = "Line";
             this.BtnLine.UseVisualStyleBackColor = true;
+            this.BtnLine.Click += new System.EventHandler(this.BtnLine_Click);
             // 
             // BtnClear
             // 
@@ -150,6 +153,7 @@
             this.BtnClear.TabIndex = 1;
             this.BtnClear.Text = "Clear";
             this.BtnClear.UseVisualStyleBackColor = true;
+            this.BtnClear.Click += new System.EventHandler(this.BtnClear_Click);
             // 
             // BtnSave
             // 
@@ -172,6 +176,7 @@
             this.Pic.TabIndex = 1;
             this.Pic.TabStop = false;
             this.Pic.Click += new System.EventHandler(this.pictureBox1_Click);
+            this.Pic.Paint += new System.Windows.Forms.PaintEventHandler(this.Pic_Paint);
             this.Pic.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Pic_MouseDown);
             this.Pic.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Pic_MouseMove);
             this.Pic.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Pic_MouseUp);
@@ -202,7 +207,7 @@
         private System.Windows.Forms.Button BtnColor;
         private System.Windows.Forms.Button BtnPaint;
         private System.Windows.Forms.Button BtnEllipse;
-        private System.Windows.Forms.Button BtnReactangle;
+        private System.Windows.Forms.Button BtnRectangle;
         private System.Windows.Forms.Button BtnLine;
         private System.Windows.Forms.PictureBox Pic;
     }
