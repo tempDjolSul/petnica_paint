@@ -1,0 +1,11 @@
+D:\repos\petnica_paint\paintproje\paintproje\bin\Release\paintproje.exe.config
+D:\repos\petnica_paint\paintproje\paintproje\bin\Release\paintproje.exe
+D:\repos\petnica_paint\paintproje\paintproje\bin\Release\paintproje.pdb
+D:\repos\petnica_paint\paintproje\paintproje\obj\Release\paintproje.csproj.AssemblyReference.cache
+D:\repos\petnica_paint\paintproje\paintproje\obj\Release\paintproje.csproj.SuggestedBindingRedirects.cache
+D:\repos\petnica_paint\paintproje\paintproje\obj\Release\paintproje.Form1.resources
+D:\repos\petnica_paint\paintproje\paintproje\obj\Release\paintproje.Properties.Resources.resources
+D:\repos\petnica_paint\paintproje\paintproje\obj\Release\paintproje.csproj.GenerateResource.cache
+D:\repos\petnica_paint\paintproje\paintproje\obj\Release\paintproje.csproj.CoreCompileInputs.cache
+D:\repos\petnica_paint\paintproje\paintproje\obj\Release\paintproje.exe
+D:\repos\petnica_paint\paintproje\paintproje\obj\Release\paintproje.pdb

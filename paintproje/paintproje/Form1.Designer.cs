@@ -29,18 +29,18 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
-            this.BtnSave = new System.Windows.Forms.Button();
-            this.BtnClear = new System.Windows.Forms.Button();
-            this.BtnLine = new System.Windows.Forms.Button();
-            this.BtnReactangle = new System.Windows.Forms.Button();
-            this.BtnPaint = new System.Windows.Forms.Button();
-            this.BtnEllipse = new System.Windows.Forms.Button();
+            this.BtnPencil = new System.Windows.Forms.Button();
             this.BtnEraser = new System.Windows.Forms.Button();
             this.BtnColor = new System.Windows.Forms.Button();
-            this.BtnPencil = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.BtnPaint = new System.Windows.Forms.Button();
+            this.BtnEllipse = new System.Windows.Forms.Button();
+            this.BtnReactangle = new System.Windows.Forms.Button();
+            this.BtnLine = new System.Windows.Forms.Button();
+            this.BtnClear = new System.Windows.Forms.Button();
+            this.BtnSave = new System.Windows.Forms.Button();
+            this.Pic = new System.Windows.Forms.PictureBox();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Pic)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -58,53 +58,43 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(800, 55);
+            this.panel1.Size = new System.Drawing.Size(814, 55);
             this.panel1.TabIndex = 0;
             // 
-            // BtnSave
+            // BtnPencil
             // 
-            this.BtnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnSave.ForeColor = System.Drawing.SystemColors.Control;
-            this.BtnSave.Location = new System.Drawing.Point(723, 3);
-            this.BtnSave.Name = "BtnSave";
-            this.BtnSave.Size = new System.Drawing.Size(85, 23);
-            this.BtnSave.TabIndex = 0;
-            this.BtnSave.Text = "Save";
-            this.BtnSave.UseVisualStyleBackColor = true;
-            this.BtnSave.Click += new System.EventHandler(this.button1_Click);
+            this.BtnPencil.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnPencil.ForeColor = System.Drawing.SystemColors.Control;
+            this.BtnPencil.Location = new System.Drawing.Point(4, 3);
+            this.BtnPencil.Name = "BtnPencil";
+            this.BtnPencil.Size = new System.Drawing.Size(65, 49);
+            this.BtnPencil.TabIndex = 8;
+            this.BtnPencil.Text = "pencil";
+            this.BtnPencil.UseVisualStyleBackColor = true;
+            this.BtnPencil.Click += new System.EventHandler(this.BtnPencil_Click);
             // 
-            // BtnClear
+            // BtnEraser
             // 
-            this.BtnClear.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnClear.ForeColor = System.Drawing.SystemColors.Control;
-            this.BtnClear.Location = new System.Drawing.Point(723, 29);
-            this.BtnClear.Name = "BtnClear";
-            this.BtnClear.Size = new System.Drawing.Size(85, 23);
-            this.BtnClear.TabIndex = 1;
-            this.BtnClear.Text = "Clear";
-            this.BtnClear.UseVisualStyleBackColor = true;
+            this.BtnEraser.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnEraser.ForeColor = System.Drawing.SystemColors.Control;
+            this.BtnEraser.Location = new System.Drawing.Point(65, 3);
+            this.BtnEraser.Name = "BtnEraser";
+            this.BtnEraser.Size = new System.Drawing.Size(65, 49);
+            this.BtnEraser.TabIndex = 7;
+            this.BtnEraser.Text = "eraser";
+            this.BtnEraser.UseVisualStyleBackColor = true;
+            
             // 
-            // BtnLine
+            // BtnColor
             // 
-            this.BtnLine.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnLine.ForeColor = System.Drawing.SystemColors.Control;
-            this.BtnLine.Location = new System.Drawing.Point(370, 3);
-            this.BtnLine.Name = "BtnLine";
-            this.BtnLine.Size = new System.Drawing.Size(65, 49);
-            this.BtnLine.TabIndex = 2;
-            this.BtnLine.Text = "Line";
-            this.BtnLine.UseVisualStyleBackColor = true;
-            // 
-            // BtnReactangle
-            // 
-            this.BtnReactangle.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnReactangle.ForeColor = System.Drawing.SystemColors.Control;
-            this.BtnReactangle.Location = new System.Drawing.Point(309, 3);
-            this.BtnReactangle.Name = "BtnReactangle";
-            this.BtnReactangle.Size = new System.Drawing.Size(65, 49);
-            this.BtnReactangle.TabIndex = 3;
-            this.BtnReactangle.Text = "Reactangle";
-            this.BtnReactangle.UseVisualStyleBackColor = true;
+            this.BtnColor.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnColor.ForeColor = System.Drawing.SystemColors.Control;
+            this.BtnColor.Location = new System.Drawing.Point(126, 3);
+            this.BtnColor.Name = "BtnColor";
+            this.BtnColor.Size = new System.Drawing.Size(65, 49);
+            this.BtnColor.TabIndex = 6;
+            this.BtnColor.Text = "color";
+            this.BtnColor.UseVisualStyleBackColor = true;
             // 
             // BtnPaint
             // 
@@ -128,60 +118,76 @@
             this.BtnEllipse.Text = "Ellipse";
             this.BtnEllipse.UseVisualStyleBackColor = true;
             // 
-            // BtnEraser
+            // BtnReactangle
             // 
-            this.BtnEraser.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnEraser.ForeColor = System.Drawing.SystemColors.Control;
-            this.BtnEraser.Location = new System.Drawing.Point(65, 3);
-            this.BtnEraser.Name = "BtnEraser";
-            this.BtnEraser.Size = new System.Drawing.Size(65, 49);
-            this.BtnEraser.TabIndex = 7;
-            this.BtnEraser.Text = "eraser";
-            this.BtnEraser.UseVisualStyleBackColor = true;
+            this.BtnReactangle.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnReactangle.ForeColor = System.Drawing.SystemColors.Control;
+            this.BtnReactangle.Location = new System.Drawing.Point(309, 3);
+            this.BtnReactangle.Name = "BtnReactangle";
+            this.BtnReactangle.Size = new System.Drawing.Size(65, 49);
+            this.BtnReactangle.TabIndex = 3;
+            this.BtnReactangle.Text = "Reactangle";
+            this.BtnReactangle.UseVisualStyleBackColor = true;
             // 
-            // BtnColor
+            // BtnLine
             // 
-            this.BtnColor.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnColor.ForeColor = System.Drawing.SystemColors.Control;
-            this.BtnColor.Location = new System.Drawing.Point(126, 3);
-            this.BtnColor.Name = "BtnColor";
-            this.BtnColor.Size = new System.Drawing.Size(65, 49);
-            this.BtnColor.TabIndex = 6;
-            this.BtnColor.Text = "color";
-            this.BtnColor.UseVisualStyleBackColor = true;
+            this.BtnLine.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnLine.ForeColor = System.Drawing.SystemColors.Control;
+            this.BtnLine.Location = new System.Drawing.Point(370, 3);
+            this.BtnLine.Name = "BtnLine";
+            this.BtnLine.Size = new System.Drawing.Size(65, 49);
+            this.BtnLine.TabIndex = 2;
+            this.BtnLine.Text = "Line";
+            this.BtnLine.UseVisualStyleBackColor = true;
             // 
-            // BtnPencil
+            // BtnClear
             // 
-            this.BtnPencil.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnPencil.ForeColor = System.Drawing.SystemColors.Control;
-            this.BtnPencil.Location = new System.Drawing.Point(4, 3);
-            this.BtnPencil.Name = "BtnPencil";
-            this.BtnPencil.Size = new System.Drawing.Size(65, 49);
-            this.BtnPencil.TabIndex = 8;
-            this.BtnPencil.Text = "pencil";
-            this.BtnPencil.UseVisualStyleBackColor = true;
+            this.BtnClear.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnClear.ForeColor = System.Drawing.SystemColors.Control;
+            this.BtnClear.Location = new System.Drawing.Point(723, 29);
+            this.BtnClear.Name = "BtnClear";
+            this.BtnClear.Size = new System.Drawing.Size(85, 23);
+            this.BtnClear.TabIndex = 1;
+            this.BtnClear.Text = "Clear";
+            this.BtnClear.UseVisualStyleBackColor = true;
             // 
-            // pictureBox1
+            // BtnSave
             // 
-            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox1.Location = new System.Drawing.Point(0, 55);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(800, 395);
-            this.pictureBox1.TabIndex = 1;
-            this.pictureBox1.TabStop = false;
+            this.BtnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnSave.ForeColor = System.Drawing.SystemColors.Control;
+            this.BtnSave.Location = new System.Drawing.Point(723, 3);
+            this.BtnSave.Name = "BtnSave";
+            this.BtnSave.Size = new System.Drawing.Size(85, 23);
+            this.BtnSave.TabIndex = 0;
+            this.BtnSave.Text = "Save";
+            this.BtnSave.UseVisualStyleBackColor = true;
+            this.BtnSave.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // Pic
+            // 
+            this.Pic.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Pic.Location = new System.Drawing.Point(0, 55);
+            this.Pic.Name = "Pic";
+            this.Pic.Size = new System.Drawing.Size(814, 513);
+            this.Pic.TabIndex = 1;
+            this.Pic.TabStop = false;
+            this.Pic.Click += new System.EventHandler(this.pictureBox1_Click);
+            this.Pic.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Pic_MouseDown);
+            this.Pic.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Pic_MouseMove);
+            this.Pic.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Pic_MouseUp);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.pictureBox1);
+            this.ClientSize = new System.Drawing.Size(814, 568);
+            this.Controls.Add(this.Pic);
             this.Controls.Add(this.panel1);
             this.Name = "Form1";
             this.Text = "Paint";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.panel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Pic)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -198,7 +204,7 @@
         private System.Windows.Forms.Button BtnEllipse;
         private System.Windows.Forms.Button BtnReactangle;
         private System.Windows.Forms.Button BtnLine;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox Pic;
     }
 }
 
