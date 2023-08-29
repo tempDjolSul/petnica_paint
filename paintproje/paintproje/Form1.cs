@@ -15,7 +15,6 @@ namespace paintproje
         Bitmap bm;
         Graphics g;
         bool paint = false;
-       
         Point px, py;
         Pen p = new Pen(Color.Black,2);
         Pen pp = new Pen(Color.White, 2);
