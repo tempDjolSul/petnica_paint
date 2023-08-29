@@ -13,25 +13,35 @@ namespace paintproje
     public partial class Form1 : Form
     {
         Bitmap bm;
+        Bitmap[] undo = new Bitmap[5];
+        Bitmap[] redo = new Bitmap[5];
         Graphics g;
         bool paint = false;
        
         Point px, py;
         Pen p = new Pen(Color.Black,2);
         Pen pp = new Pen(Color.White, 2);
-        Brush tacka = new SolidBrush(Color.Black);
-        int index;
+        Brush dot = new SolidBrush(Color.Black);
+        int indexOfUndo;
+        VersionOfDrawing indexDrawing;
         int x, y, sx, sy, cx, cy;
        
         
-
+        private enum VersionOfDrawing { nothing,dot, eraser, elipse, rectangle, line, bucket}
         public Form1()
         {
             InitializeComponent();
             bm = new Bitmap(Pic.Width,Pic.Height);
+            indexOfUndo = 0;
+            for (int i = 0; i < 5; i++)
+            {
+                redo[i] = new Bitmap(Pic.Width, Pic.Height);
+                undo[i] = new Bitmap(Pic.Width, Pic.Height);
+            }
             g = Graphics.FromImage(bm);
             g.Clear(Color.White);
             Pic.Image = bm;
+            
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -57,12 +67,12 @@ namespace paintproje
         
         private void BtnRectangle_Click(object sender, EventArgs e)
         {
-            index = 4;
+            indexDrawing = VersionOfDrawing.rectangle;
         }
 
         private void BtnLine_Click(object sender, EventArgs e)
         {
-            index = 5;
+            indexDrawing = VersionOfDrawing.line;
         }
 
         private void Pic_Paint(object sender, PaintEventArgs e)
@@ -70,15 +80,16 @@ namespace paintproje
             Graphics g = e.Graphics;
             if (paint)
             {
-                if (index == 3)
+                if (indexDrawing == VersionOfDrawing.elipse)
                 {
                     g.DrawEllipse(p, cx, cy, sx, sy);
                 }
-                else if (index == 4)
+                else if (indexDrawing == VersionOfDrawing.rectangle)
                 {
                     g.DrawRectangle(p, cx, cy, sx, sy);
+                   
                 }
-                else if (index == 5)
+                else if (indexDrawing == VersionOfDrawing.line)
                 {
                     g.DrawLine(p, cx, cy, x, y);
                 }
@@ -89,28 +100,34 @@ namespace paintproje
         {
             g.Clear(Color.White);
             Pic.Image = bm;
-            index = 0;
+            indexDrawing = VersionOfDrawing.nothing;
 
+        }
+
+        private void BtnEraser_Click(object sender, EventArgs e)
+        {
+            indexDrawing = VersionOfDrawing.eraser;
         }
 
         private void BtnPencil_Click(object sender, EventArgs e)
         {
-            index = 1;
+            indexDrawing = VersionOfDrawing.dot;
         }
         private void Pic_MouseMove(object sender, MouseEventArgs e)
         {
             
             if (paint)
             {
-                if (index == 1)
+                if (indexDrawing == VersionOfDrawing.dot)
                 {
                     px = e.Location;
                     //g.DrawLine(p, px, py);
-                    g.FillEllipse(tacka, px.X-10, py.Y-10, 20, 20);
+                    g.FillEllipse(dot, px.X-10, py.Y-10, 20, 20);
+
                     py = px;
                    
                 }
-                else if(index == 2)
+                else if(indexDrawing == VersionOfDrawing.eraser)
                 {
                     px = e.Location;
                     g.DrawLine(pp, px, py);
@@ -127,7 +144,11 @@ namespace paintproje
             sy = e.Y - cy;
         }
 
-        
+        private void btnUndo_Click(object sender, EventArgs e)
+        {
+            IzvrsiUndo();
+        }
+
         private void Pic_MouseUp(object sender, MouseEventArgs e)
         {
             
@@ -135,30 +156,44 @@ namespace paintproje
 
             sx = x - cx;
             sy = y - cy;
-            if (index == 3)
+            if (indexDrawing == VersionOfDrawing.elipse)
             {
                 g.DrawEllipse(p, cx, cy, sx, sy);
             }
-            else if (index == 4)
+            else if (indexDrawing == VersionOfDrawing.rectangle)
             {
                 g.DrawRectangle(p, cx, cy, sx, sy);
             }
-            else if (index == 5)
+            else if (indexDrawing == VersionOfDrawing.line)
             {
                 g.DrawLine(p, cx, cy, x, y);
             }
 
 
+            NamestiUndo();
+        }
+        private void NamestiUndo()
+        {
+            for(int i = 0;i<undo.Length-1;i++)
+            {
+                undo[i] = undo[i + 1];
+            }
+            undo[undo.Length - 1] = (Bitmap)Pic.Image;
         }
 
+        private void IzvrsiUndo()
+        {
+            indexOfUndo++;
+            Pic.Image = undo[undo.Length - indexOfUndo];
+        }
         private void BtnEraser_MouseClick(object sender, MouseEventArgs e)
         {
-            index = 2;
+            indexDrawing = VersionOfDrawing.eraser;
         }
 
         private void BtnEllipse_MouseClick(object sender, MouseEventArgs e)
         {
-            index = 3;
+            indexDrawing = VersionOfDrawing.elipse;
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)
@@ -166,6 +201,15 @@ namespace paintproje
 
         }
 
-        
+        struct DrawedInformation
+        {
+            int startX;
+            int startY;
+            int widthX;
+            int lengthY;
+            VersionOfDrawing typeOfDrawing;
+            
+        }
     }
+    
 }
