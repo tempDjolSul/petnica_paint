@@ -20,13 +20,12 @@ namespace paintproje
         Pen p = new Pen(Color.Black,2);
         Pen pp = new Pen(Color.White, 2);
         Brush tacka = new SolidBrush(Color.Black);
+        Brush tacka2 = new SolidBrush(Color.White);
+        int strokeSize = 10;
         int index;
         int x, y, sx, sy, cx, cy;
         Color New_Color = Color.Firebrick;
-
-       
-        
-
+        int DisUnit = 1;
         public Form1()
         {
             InitializeComponent();
@@ -35,18 +34,14 @@ namespace paintproje
             g.Clear(Color.White);
             Pic.Image = bm;
         }
-
         private void Form1_Load(object sender, EventArgs e)
         {
 
         }
-
         private void button1_Click(object sender, EventArgs e)
         {
             
         }
-
-        
         private void Pic_MouseDown(object sender, MouseEventArgs e)
         {
             paint = true;
@@ -55,8 +50,6 @@ namespace paintproje
             cy = e.Y;
            
         }
-
-        
         private void BtnRectangle_Click(object sender, EventArgs e)
         {
             index = 4;
@@ -86,6 +79,7 @@ namespace paintproje
                 }
             }
         }
+        
 
         private void BtnClear_Click(object sender, EventArgs e)
         {
@@ -112,7 +106,6 @@ namespace paintproje
             Color cx = bm.GetPixel(x, y);
             if (cx == Old_Color)
             {
-                //greska kad ostane predugo (system out of memory excep)
                 sp.Push(new Point(x, y));
                     bm.SetPixel(x, y, New_Color);
             }
@@ -144,10 +137,30 @@ namespace paintproje
             if (index == 6)
             {
                 Point point = set_Point(Pic, e.Location);
-                //MessageBox.Show(cx + " " + cy);
                 Fill(bm, point.X, point.Y, New_Color);
 
             }
+        }
+
+        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
+        {
+
+            strokeSize = (int)numericUpDown1.Value;
+            
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            TextBox txt = new TextBox();
+            this.Controls.Add(txt);
+            txt.Top = DisUnit * 70;
+            txt.Left = 415;
+            DisUnit = DisUnit + 1;
+            txt.ForeColor= Color.Green;
+            txt.Font = new Font("Arial",20.25F, FontStyle.Bold, GraphicsUnit.Point,((byte)(0)));
+            txt.Width = 150;
+            txt.Height = 50;
+            txt.Text= " ";
         }
 
         private void BtnPencil_Click(object sender, EventArgs e)
@@ -162,16 +175,16 @@ namespace paintproje
                 if (index == 1)
                 {
                     px = e.Location;
-                    //g.DrawLine(p, px, py);
-                    g.FillEllipse(tacka, px.X-10, py.Y-10, 20, 20);
+                    g.FillEllipse(tacka, px.X-strokeSize/2, py.Y-strokeSize/2, strokeSize, strokeSize);
                     py = px;
                    
                 }
                 else if(index == 2)
                 {
                     px = e.Location;
-                    g.DrawLine(pp, px, py);
+                    g.FillEllipse(tacka2, px.X - strokeSize / 2, py.Y - strokeSize / 2, strokeSize, strokeSize);
                     py = px;
+                    
 
                 }
                 
@@ -183,7 +196,6 @@ namespace paintproje
             sx = e.X - cx;
             sy = e.Y - cy;
         }
-
         
         private void Pic_MouseUp(object sender, MouseEventArgs e)
         {
