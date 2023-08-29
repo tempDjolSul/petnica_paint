@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Drawing.Imaging;
+using System.Drawing.Drawing2D;
 
 namespace paintproje
 {
@@ -21,7 +23,8 @@ namespace paintproje
         Brush tacka = new SolidBrush(Color.Black);
         int index;
         int x, y, sx, sy, cx, cy;
-        Color New_Color = Color.Firebrick;
+        Color New_Color;
+        ColorDialog cd = new ColorDialog();
 
        
         
@@ -33,6 +36,8 @@ namespace paintproje
             g = Graphics.FromImage(bm);
             g.Clear(Color.White);
             Pic.Image = bm;
+            //ova  linija koda ne radi jer mora da se klikne dugme star koje nemam 
+            //BtnStar.Click += BtnStar_Click; 
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -173,6 +178,7 @@ namespace paintproje
                     py = px;
 
                 }
+               
                 
             }
             
@@ -222,6 +228,71 @@ namespace paintproje
             
         }
 
+        //Dodata paleta boja
+        private void BtnColor_Click(object sender, EventArgs e)
+        {
+            cd.ShowDialog();
+            New_Color = cd.Color;
+            Pic.BackColor = cd.Color;
+            p.Color = cd.Color;
+
+         }
+
+        //Dodato save dugme
+        private void BtnSave_Click(object sender, EventArgs e)
+        {
+            var sfd = new SaveFileDialog();
+            sfd.Filter = "Image(*.jpg)|*.jpg|(*.*)|*.*";
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                Bitmap btm = bm.Clone(new Rectangle(0, 0, Pic.Width, Pic.Height), bm.PixelFormat);
+                btm.Save(sfd.FileName, ImageFormat.Jpeg);
+
+            }
+        }
+
+        //pokusaj zvezde
+        private void DrawStar(Graphics g, int x,int y, int Width, int Height, int numPoints)
+        {
+            PointF[] starPoints = CalculateStarPoints(new PointF(x, y), Width, Height, numPoints);
+            g.DrawPolygon(p, starPoints);
+        }
+
+        private PointF[] CalculateStarPoints(PointF pointF, int width, int height, int numPoints)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void BtnStar_Click(object sender, EventArgs e)
+        {
+            index = 7;
+        }
+
+        private void Pic_Paint2(object sender, PaintEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            if (paint)
+            {
+                if (index == 3)
+                {
+                    g.DrawEllipse(p, cx, cy, sx, sy);
+                }
+                else if (index == 4)
+                {
+                    g.DrawRectangle(p, cx, cy, sx, sy);
+                }
+                else if (index == 5)
+                {
+                    g.DrawLine(p, cx, cy, x, y);
+                }
+                else if (index == 7)
+                {
+                    DrawStar(g, cx, cy, sx, sy, 5);
+                }
+            }
+        }
+
+        //pogledati liniju 40!
         
     }
 }
