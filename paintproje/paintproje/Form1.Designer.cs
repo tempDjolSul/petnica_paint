@@ -28,7 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.button1 = new System.Windows.Forms.Button();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.BtnPencil = new System.Windows.Forms.Button();
             this.BtnEraser = new System.Windows.Forms.Button();
             this.BtnColor = new System.Windows.Forms.Button();
@@ -40,7 +43,10 @@
             this.BtnSave = new System.Windows.Forms.Button();
             this.Pic = new System.Windows.Forms.PictureBox();
             this.btnUndo = new System.Windows.Forms.Button();
+
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Pic)).BeginInit();
             this.SuspendLayout();
             // 
@@ -48,6 +54,8 @@
             // 
             this.panel1.BackColor = System.Drawing.Color.LightSlateGray;
             this.panel1.Controls.Add(this.btnUndo);
+            this.panel1.Controls.Add(this.button1);
+            this.panel1.Controls.Add(this.numericUpDown1);
             this.panel1.Controls.Add(this.BtnPencil);
             this.panel1.Controls.Add(this.BtnEraser);
             this.panel1.Controls.Add(this.BtnColor);
@@ -63,6 +71,36 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(682, 45);
             this.panel1.TabIndex = 0;
+            // 
+            // button1
+            // 
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.ForeColor = System.Drawing.SystemColors.Control;
+            this.button1.Location = new System.Drawing.Point(434, 3);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(65, 49);
+            this.button1.TabIndex = 9;
+            this.button1.Text = "text";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.Location = new System.Drawing.Point(519, 17);
+            this.numericUpDown1.Minimum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(45, 22);
+            this.numericUpDown1.TabIndex = 2;
+            this.numericUpDown1.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDown1.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
             // 
             // BtnPencil
             // 
@@ -114,6 +152,7 @@
             this.BtnPaint.TabIndex = 5;
             this.BtnPaint.Text = "paint";
             this.BtnPaint.UseVisualStyleBackColor = true;
+            this.BtnPaint.Click += new System.EventHandler(this.BtnPaint_Click);
             // 
             // BtnEllipse
             // 
@@ -189,8 +228,9 @@
             this.Pic.Size = new System.Drawing.Size(682, 417);
             this.Pic.TabIndex = 1;
             this.Pic.TabStop = false;
-            this.Pic.Click += new System.EventHandler(this.pictureBox1_Click);
+            this.Pic.Click += new System.EventHandler(this.Pic_Click);
             this.Pic.Paint += new System.Windows.Forms.PaintEventHandler(this.Pic_Paint);
+            this.Pic.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Pic_MouseClick);
             this.Pic.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Pic_MouseDown);
             this.Pic.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Pic_MouseMove);
             this.Pic.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Pic_MouseUp);
@@ -207,6 +247,11 @@
             this.btnUndo.Text = "Undo";
             this.btnUndo.UseVisualStyleBackColor = true;
             this.btnUndo.Click += new System.EventHandler(this.btnUndo_Click);
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);            
             // 
             // Form1
             // 
@@ -220,6 +265,7 @@
             this.Text = "Paint";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Pic)).EndInit();
             this.ResumeLayout(false);
 
@@ -239,6 +285,10 @@
         private System.Windows.Forms.Button BtnLine;
         private System.Windows.Forms.PictureBox Pic;
         private System.Windows.Forms.Button btnUndo;
+
+        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
     }
 }
 
