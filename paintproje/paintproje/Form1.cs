@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Drawing.Imaging;
+using System.Drawing.Drawing2D;
 
 namespace paintproje
 {
@@ -26,13 +28,18 @@ namespace paintproje
         Color brushColor = Color.Black;
         VersionOfDrawing indexDrawing;
         int x, y, endX, endY, startX, startY;
+        Color New_Color;
+        Color startColor;
+        ColorDialog cd;
+
+       
+
         
         
-        private enum VersionOfDrawing { nothing,dot, eraser, elipse, rectangle, line, bucket}
+        private enum VersionOfDrawing { nothing,dot, eraser, elipse, rectangle, line, bucket,star}
 
         Brush dotWhite = new SolidBrush(Color.White);
         int strokeSize = 10;
-        Color New_Color = Color.Firebrick;
         int DisUnit = 1;
 
         public Form1()
@@ -42,15 +49,13 @@ namespace paintproje
             g = Graphics.FromImage(bm);
             g.Clear(Color.White);
             Pic.Image = bm;
-            
+            cd = new ColorDialog();
+            //ova  linija koda ne radi jer mora da se klikne dugme star koje nemam 
+            //BtnStar.Click += BtnStar_Click; 
         }
         private void Form1_Load(object sender, EventArgs e)
         {
 
-        }
-        private void button1_Click(object sender, EventArgs e)
-        {
-            
         }
         private void Pic_MouseDown(object sender, MouseEventArgs e)
         {
@@ -58,7 +63,7 @@ namespace paintproje
             penY = e.Location;
             startX = e.X;
             startY = e.Y;
-           
+            startColor = bm.GetPixel(startX, startY);
         }
         private void BtnRectangle_Click(object sender, EventArgs e)
         {
@@ -88,6 +93,10 @@ namespace paintproje
                 else if (indexDrawing == VersionOfDrawing.line)
                 {
                     g.DrawLine(drawingPen, startX, startY, x, y);
+                }
+                else if (indexDrawing == VersionOfDrawing.star)
+                {
+                    DrawStar(g, startX, startY, endX, endY, 5);
                 }
             }
         }
@@ -177,7 +186,7 @@ namespace paintproje
         {
 
             strokeSize = (int)numericUpDown1.Value;
-            
+            drawingPen.Width = (int)numericUpDown1.Value;
         }
 
         private void button1_Click_1(object sender, EventArgs e)
@@ -205,8 +214,9 @@ namespace paintproje
                     if (indexDrawing == VersionOfDrawing.dot)
                     {
                         penX = e.Location;
+                    makeUndoInfo(startColor,brushColor, strokeSize, penX);
                     g.FillEllipse(dot, penX.X - strokeSize / 2, penX.Y - strokeSize / 2, strokeSize, strokeSize);
-                    makeUndoInfo(brushColor, strokeSize, penX);
+                    
 
                     //penY = penX;
 
@@ -214,14 +224,16 @@ namespace paintproje
                 else if (indexDrawing == VersionOfDrawing.eraser)
                     {
                         penX = e.Location;
-                        g.FillEllipse(dotWhite, penX.X - strokeSize / 2, penX.Y - strokeSize / 2, strokeSize, strokeSize);
-                    makeUndoInfo(brushColor, strokeSize, penX);
+                    makeUndoInfo(startColor, Color.White, strokeSize, penX);
+                    g.FillEllipse(dotWhite, penX.X - strokeSize / 2, penX.Y - strokeSize / 2, strokeSize, strokeSize);
 
 
                     //penPoints.Add(penX);
                     //penY = penX;
                 }
 
+               
+                
             }
                 //pokrece Pic.Paint()
                 Pic.Refresh();
@@ -276,7 +288,7 @@ namespace paintproje
             info.size = drawingSize;
             undoStack.Push(info);
         }
-        private void makeUndoInfo(Color replacing, int drawingSize,Point location)
+        private void makeUndoInfo(Color replaced,Color replacing, int drawingSize,Point location)
         {
             DrawedInformation info;
             info.startX = location.X;
@@ -284,7 +296,7 @@ namespace paintproje
             info.endX = endX;
             info.endY = endY;
             info.typeOfDrawing = indexDrawing;
-            info.replacedColor = bm.GetPixel(startX, startY);
+            info.replacedColor = replaced;
             info.replacingColor = replacing;
             info.size = drawingSize;
             undoStack.Push(info);
@@ -308,7 +320,9 @@ namespace paintproje
                         int razdaljina = (int)Math.Sqrt((nextPrevDrawing.startX - previousDrawing.startX) * (nextPrevDrawing.startX - previousDrawing.startX) + (nextPrevDrawing.startY - previousDrawing.startY) * (nextPrevDrawing.startY - previousDrawing.startY));
                         if(nextPrevDrawing.typeOfDrawing == previousDrawing.typeOfDrawing && razdaljina < 10)
                         {
-                            nextPrevDrawing.replacingColor = previousDrawing.replacingColor;
+                          //  nextPrevDrawing.replacingColor = previousDrawing.replacingColor;
+                          //  undoStack.Pop();
+                          //  undoStack.Push(nextPrevDrawing);
                             IzvrsiUndo();
                         }
                     }
@@ -317,8 +331,9 @@ namespace paintproje
             }
             else
             {
-               // btnUndo.Visible = false;
+               MessageBox.Show("Can't Undo");
             }
+            
         }
 
         private void BrushUndo(DrawedInformation i)
@@ -327,11 +342,11 @@ namespace paintproje
             Brush tempBrush = new SolidBrush(i.replacedColor);
                 if(i.typeOfDrawing == VersionOfDrawing.dot)
                 {
-                    g.FillEllipse(tempBrush, i.startX - i.size / 2, i.startY - i.size / 2, i.size+2, i.size+2);
+                    g.FillEllipse(tempBrush, i.startX - i.size / 2, i.startY - i.size / 2, i.size, i.size);
                 }
                 if(i.typeOfDrawing == VersionOfDrawing.eraser)
                 {
-                    g.FillEllipse(tempBrush, i.startX - i.size / 2, i.startY - i.size / 2, i.size+2, i.size+2);
+                    g.FillEllipse(tempBrush, i.startX - i.size / 2, i.startY - i.size / 2, i.size, i.size);
                 }
             
         }
@@ -374,6 +389,23 @@ namespace paintproje
             
         }
 
+       
+
+        private void btnStar_Click_1(object sender, EventArgs e)
+        {
+            indexDrawing = VersionOfDrawing.star;
+        }
+
+        private void BtnColor_Click_1(object sender, EventArgs e)
+        {
+            colorDialog.ShowDialog();
+            New_Color = colorDialog.Color;
+            //Pic.BackColor = colorDialog.Color;
+            dot = new SolidBrush(New_Color);
+            drawingPen.Color = colorDialog.Color;
+
+        }
+
         struct DrawedInformation
         {
             public int startX;
@@ -386,5 +418,42 @@ namespace paintproje
             public int size;
             //public Point[] pointArray;
         }
+        //Dodata paleta boja
+        
+
+        private void BtnSave_Click(object sender, EventArgs e)
+        {
+            var sfd = new SaveFileDialog();
+            sfd.Filter = "Image(*.jpg)|*.jpg|(*.*)|*.*";
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                Bitmap btm = bm.Clone(new Rectangle(0, 0, Pic.Width, Pic.Height), bm.PixelFormat);
+                btm.Save(sfd.FileName, ImageFormat.Jpeg);
+
+            }
+        }
+
+        //pokusaj zvezde
+        private void DrawStar(Graphics g, int x,int y, int Width, int Height, int numPoints)
+        {
+            PointF[] array = new PointF[10];
+            array[0] = new Point(startX, startY + (endY - startY) / 3);
+            array[1] = array[0];
+            array[1].X += (endX - startX) / 4;
+            array[3] = array[0];
+            array[3].X += (endX - startX) / 4;
+            array[4] = array[0];
+            array[4].X = endX;
+            //g.DrawPolygon(drawingPen, starPoints);
+        }
+
+        
+
+        
+
+        
+
+        //pogledati liniju 40!
+        
     }
    }

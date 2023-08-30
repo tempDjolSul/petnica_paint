@@ -31,7 +31,6 @@
             this.components = new System.ComponentModel.Container();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnUndo = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.BtnPencil = new System.Windows.Forms.Button();
             this.BtnEraser = new System.Windows.Forms.Button();
@@ -44,6 +43,8 @@
             this.BtnSave = new System.Windows.Forms.Button();
             this.Pic = new System.Windows.Forms.PictureBox();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.colorDialog = new System.Windows.Forms.ColorDialog();
+            this.label1 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Pic)).BeginInit();
@@ -52,8 +53,8 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.LightSlateGray;
+            this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.btnUndo);
-            this.panel1.Controls.Add(this.button1);
             this.panel1.Controls.Add(this.numericUpDown1);
             this.panel1.Controls.Add(this.BtnPencil);
             this.panel1.Controls.Add(this.BtnEraser);
@@ -68,7 +69,7 @@
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(682, 45);
+            this.panel1.Size = new System.Drawing.Size(682, 52);
             this.panel1.TabIndex = 0;
             // 
             // btnUndo
@@ -78,27 +79,15 @@
             this.btnUndo.Location = new System.Drawing.Point(610, 2);
             this.btnUndo.Margin = new System.Windows.Forms.Padding(2);
             this.btnUndo.Name = "btnUndo";
-            this.btnUndo.Size = new System.Drawing.Size(64, 19);
+            this.btnUndo.Size = new System.Drawing.Size(64, 22);
             this.btnUndo.TabIndex = 9;
             this.btnUndo.Text = "Undo";
             this.btnUndo.UseVisualStyleBackColor = true;
             this.btnUndo.Click += new System.EventHandler(this.btnUndo_Click);
             // 
-            // button1
-            // 
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.ForeColor = System.Drawing.SystemColors.Control;
-            this.button1.Location = new System.Drawing.Point(360, -2);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(65, 49);
-            this.button1.TabIndex = 9;
-            this.button1.Text = "text";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click_1);
-            // 
             // numericUpDown1
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(454, 12);
+            this.numericUpDown1.Location = new System.Drawing.Point(476, 27);
             this.numericUpDown1.Minimum = new decimal(new int[] {
             10,
             0,
@@ -152,6 +141,7 @@
             this.BtnColor.TabIndex = 6;
             this.BtnColor.Text = "color";
             this.BtnColor.UseVisualStyleBackColor = true;
+            this.BtnColor.Click += new System.EventHandler(this.BtnColor_Click_1);
             // 
             // BtnPaint
             // 
@@ -186,7 +176,7 @@
             this.BtnRectangle.Location = new System.Drawing.Point(232, 2);
             this.BtnRectangle.Margin = new System.Windows.Forms.Padding(2);
             this.BtnRectangle.Name = "BtnRectangle";
-            this.BtnRectangle.Size = new System.Drawing.Size(49, 40);
+            this.BtnRectangle.Size = new System.Drawing.Size(76, 40);
             this.BtnRectangle.TabIndex = 3;
             this.BtnRectangle.Text = "Rectangle";
             this.BtnRectangle.UseVisualStyleBackColor = true;
@@ -196,10 +186,10 @@
             // 
             this.BtnLine.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BtnLine.ForeColor = System.Drawing.SystemColors.Control;
-            this.BtnLine.Location = new System.Drawing.Point(278, 2);
+            this.BtnLine.Location = new System.Drawing.Point(302, 2);
             this.BtnLine.Margin = new System.Windows.Forms.Padding(2);
             this.BtnLine.Name = "BtnLine";
-            this.BtnLine.Size = new System.Drawing.Size(49, 40);
+            this.BtnLine.Size = new System.Drawing.Size(53, 40);
             this.BtnLine.TabIndex = 2;
             this.BtnLine.Text = "Line";
             this.BtnLine.UseVisualStyleBackColor = true;
@@ -209,10 +199,10 @@
             // 
             this.BtnClear.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BtnClear.ForeColor = System.Drawing.SystemColors.Control;
-            this.BtnClear.Location = new System.Drawing.Point(542, 24);
+            this.BtnClear.Location = new System.Drawing.Point(542, 28);
             this.BtnClear.Margin = new System.Windows.Forms.Padding(2);
             this.BtnClear.Name = "BtnClear";
-            this.BtnClear.Size = new System.Drawing.Size(64, 19);
+            this.BtnClear.Size = new System.Drawing.Size(64, 24);
             this.BtnClear.TabIndex = 1;
             this.BtnClear.Text = "Clear";
             this.BtnClear.UseVisualStyleBackColor = true;
@@ -225,19 +215,19 @@
             this.BtnSave.Location = new System.Drawing.Point(542, 2);
             this.BtnSave.Margin = new System.Windows.Forms.Padding(2);
             this.BtnSave.Name = "BtnSave";
-            this.BtnSave.Size = new System.Drawing.Size(64, 19);
+            this.BtnSave.Size = new System.Drawing.Size(64, 22);
             this.BtnSave.TabIndex = 0;
             this.BtnSave.Text = "Save";
             this.BtnSave.UseVisualStyleBackColor = true;
-            this.BtnSave.Click += new System.EventHandler(this.button1_Click);
+            this.BtnSave.Click += new System.EventHandler(this.BtnSave_Click);
             // 
             // Pic
             // 
             this.Pic.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Pic.Location = new System.Drawing.Point(0, 45);
+            this.Pic.Location = new System.Drawing.Point(0, 52);
             this.Pic.Margin = new System.Windows.Forms.Padding(2);
             this.Pic.Name = "Pic";
-            this.Pic.Size = new System.Drawing.Size(682, 417);
+            this.Pic.Size = new System.Drawing.Size(682, 410);
             this.Pic.TabIndex = 1;
             this.Pic.TabStop = false;
             this.Pic.Click += new System.EventHandler(this.Pic_Click);
@@ -253,6 +243,15 @@
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(473, 11);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(27, 13);
+            this.label1.TabIndex = 10;
+            this.label1.Text = "Size";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -265,6 +264,7 @@
             this.Text = "Paint";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Pic)).EndInit();
             this.ResumeLayout(false);
@@ -287,8 +287,9 @@
         private System.Windows.Forms.Button btnUndo;
 
         private System.Windows.Forms.NumericUpDown numericUpDown1;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ColorDialog colorDialog;
+        private System.Windows.Forms.Label label1;
     }
 }
 
