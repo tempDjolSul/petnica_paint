@@ -23,7 +23,7 @@ namespace paintproje
         Pen drawingPen = new Pen(Color.Black,2);
         Pen pp = new Pen(Color.White, 2);
         Brush dot = new SolidBrush(Color.Black);
-        Color brushColor;
+        Color brushColor = Color.Black;
         VersionOfDrawing indexDrawing;
         int x, y, endX, endY, startX, startY;
         
@@ -205,22 +205,24 @@ namespace paintproje
                     if (indexDrawing == VersionOfDrawing.dot)
                     {
                         penX = e.Location;
-                        makeUndoInfo(brushColor, strokeSize);
-                        g.FillEllipse(dot, penX.X - strokeSize / 2, penY.Y - strokeSize / 2, strokeSize, strokeSize);
-                        penPoints.Add(penX);
-                        penY = penX;
+                    g.FillEllipse(dot, penX.X - strokeSize / 2, penX.Y - strokeSize / 2, strokeSize, strokeSize);
+                    makeUndoInfo(brushColor, strokeSize, penX);
 
-                    }
-                    else if (indexDrawing == VersionOfDrawing.eraser)
-                    {
-                        penX = e.Location;
-                        makeUndoInfo(Color.White, strokeSize);
-                        g.FillEllipse(dotWhite, penX.X - strokeSize / 2, penY.Y - strokeSize / 2, strokeSize, strokeSize);
-                        penPoints.Add(penX);
-                        penY = penX;
-                    }
+                    //penY = penX;
 
                 }
+                else if (indexDrawing == VersionOfDrawing.eraser)
+                    {
+                        penX = e.Location;
+                        g.FillEllipse(dotWhite, penX.X - strokeSize / 2, penX.Y - strokeSize / 2, strokeSize, strokeSize);
+                    makeUndoInfo(brushColor, strokeSize, penX);
+
+
+                    //penPoints.Add(penX);
+                    //penY = penX;
+                }
+
+            }
                 //pokrece Pic.Paint()
                 Pic.Refresh();
 
@@ -272,12 +274,19 @@ namespace paintproje
             info.replacedColor = bm.GetPixel(startX, startY);
             info.replacingColor =  replacing;
             info.size = drawingSize;
-            //info.pointArray = new Point[paintLocations.Count];
-            //for(int i = 0;i<info.pointArray.Length;i++)
-            //{
-            //    info.pointArray[i] = paintLocations[i];
-            //    paintLocations.Remove(paintLocations[i]);
-            //}
+            undoStack.Push(info);
+        }
+        private void makeUndoInfo(Color replacing, int drawingSize,Point location)
+        {
+            DrawedInformation info;
+            info.startX = location.X;
+            info.startY = location.Y;
+            info.endX = endX;
+            info.endY = endY;
+            info.typeOfDrawing = indexDrawing;
+            info.replacedColor = bm.GetPixel(startX, startY);
+            info.replacingColor = replacing;
+            info.size = drawingSize;
             undoStack.Push(info);
         }
 
@@ -296,22 +305,33 @@ namespace paintproje
                     if (undoStack.Count > 0)
                     {
                         DrawedInformation nextPrevDrawing = undoStack.Peek();
-                        if(nextPrevDrawing.typeOfDrawing == previousDrawing.typeOfDrawing)
+                        int razdaljina = (int)Math.Sqrt((nextPrevDrawing.startX - previousDrawing.startX) * (nextPrevDrawing.startX - previousDrawing.startX) + (nextPrevDrawing.startY - previousDrawing.startY) * (nextPrevDrawing.startY - previousDrawing.startY));
+                        if(nextPrevDrawing.typeOfDrawing == previousDrawing.typeOfDrawing && razdaljina < 10)
                         {
+                            nextPrevDrawing.replacingColor = previousDrawing.replacingColor;
                             IzvrsiUndo();
                         }
                     }
                 }
                 //redoStack.Push(previousDrawing);
             }
+            else
+            {
+               // btnUndo.Visible = false;
+            }
         }
 
         private void BrushUndo(DrawedInformation i)
         {
+            //MessageBox.Show(i.replacedColor.ToString());
             Brush tempBrush = new SolidBrush(i.replacedColor);
                 if(i.typeOfDrawing == VersionOfDrawing.dot)
                 {
-                    g.FillEllipse(tempBrush, i.startX - i.size / 2, i.startY - i.size / 2, i.size, i.size);
+                    g.FillEllipse(tempBrush, i.startX - i.size / 2, i.startY - i.size / 2, i.size+2, i.size+2);
+                }
+                if(i.typeOfDrawing == VersionOfDrawing.eraser)
+                {
+                    g.FillEllipse(tempBrush, i.startX - i.size / 2, i.startY - i.size / 2, i.size+2, i.size+2);
                 }
             
         }
@@ -324,7 +344,15 @@ namespace paintproje
             endX = i.endX;
             endY = i.endY;
             indexDrawing = i.typeOfDrawing;
-            PaintShapes();
+            if (i.typeOfDrawing != VersionOfDrawing.bucket)
+            {
+                PaintShapes();
+            }
+            else
+            {
+                Fill(bm, i.startX, i.startY, i.replacedColor);
+            }
+
             drawingPen.Color = i.replacingColor;
             //MessageBox.Show("Hej!" + startX + "," + startY);
             //MessageBox.Show("Hej!" + endX + "," + endY);
