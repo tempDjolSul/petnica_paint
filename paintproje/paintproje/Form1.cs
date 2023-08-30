@@ -13,19 +13,20 @@ namespace paintproje
     public partial class Form1 : Form
     {
         Bitmap bm;
-        Bitmap[] undo = new Bitmap[5];
-        Bitmap[] redo = new Bitmap[5];
+        Stack<DrawedInformation> undoStack = new Stack<DrawedInformation>();
+        Stack<DrawedInformation> redoStack = new Stack<DrawedInformation>();
         Graphics g;
         bool paint = false;
+        List<Point> penPoints = new List<Point>();
        
-        Point px, py;
-        Pen p = new Pen(Color.Black,2);
+        Point penX, penY;
+        Pen drawingPen = new Pen(Color.Black,2);
         Pen pp = new Pen(Color.White, 2);
         Brush dot = new SolidBrush(Color.Black);
-        int indexOfUndo;
+        Color brushColor;
         VersionOfDrawing indexDrawing;
-        int x, y, sx, sy, cx, cy;
-       
+        int x, y, endX, endY, startX, startY;
+        
         
         private enum VersionOfDrawing { nothing,dot, eraser, elipse, rectangle, line, bucket}
 
@@ -38,12 +39,6 @@ namespace paintproje
         {
             InitializeComponent();
             bm = new Bitmap(Pic.Width,Pic.Height);
-            indexOfUndo = 0;
-            for (int i = 0; i < 5; i++)
-            {
-                redo[i] = new Bitmap(Pic.Width, Pic.Height);
-                undo[i] = new Bitmap(Pic.Width, Pic.Height);
-            }
             g = Graphics.FromImage(bm);
             g.Clear(Color.White);
             Pic.Image = bm;
@@ -60,14 +55,15 @@ namespace paintproje
         private void Pic_MouseDown(object sender, MouseEventArgs e)
         {
             paint = true;
-            py = e.Location;
-            cx = e.X;
-            cy = e.Y;
+            penY = e.Location;
+            startX = e.X;
+            startY = e.Y;
            
         }
         private void BtnRectangle_Click(object sender, EventArgs e)
         {
             indexDrawing = VersionOfDrawing.rectangle;
+            MessageBox.Show(x + " " + y);
         }
 
         private void BtnLine_Click(object sender, EventArgs e)
@@ -82,21 +78,36 @@ namespace paintproje
             {
                 if (indexDrawing == VersionOfDrawing.elipse)
                 {
-                    g.DrawEllipse(p, cx, cy, sx, sy);
+                    g.DrawEllipse(drawingPen, startX, startY, endX, endY);
                 }
                 else if (indexDrawing == VersionOfDrawing.rectangle)
                 {
-                    g.DrawRectangle(p, cx, cy, sx, sy);
+                    g.DrawRectangle(drawingPen, startX, startY, endX, endY);
                    
                 }
                 else if (indexDrawing == VersionOfDrawing.line)
                 {
-                    g.DrawLine(p, cx, cy, x, y);
+                    g.DrawLine(drawingPen, startX, startY, x, y);
                 }
             }
         }
         
+        private void PaintShapes()
+        {
+            if (indexDrawing == VersionOfDrawing.elipse)
+            {
+                g.DrawEllipse(drawingPen, startX, startY, endX, endY);
+            }
+            else if (indexDrawing == VersionOfDrawing.rectangle)
+            {
+                g.DrawRectangle(drawingPen, startX, startY, endX, endY);
 
+            }
+            else if (indexDrawing == VersionOfDrawing.line)
+            {
+                g.DrawLine(drawingPen, startX, startY, x, y);
+            }
+        }
         private void BtnClear_Click(object sender, EventArgs e)
         {
             g.Clear(Color.White);
@@ -116,15 +127,15 @@ namespace paintproje
         
         static Point set_Point(PictureBox pb, Point pt)
         {
-            float px = 1f * pb.Width / pb.Width;
-            float py = 1f * pb.Height / pb.Height;
-            return new Point((int)(pt.X * px), (int)(pt.Y * py));
+            float penX = 1f * pb.Width / pb.Width;
+            float penY = 1f * pb.Height / pb.Height;
+            return new Point((int)(pt.X * penX), (int)(pt.Y * penY));
         }
 
         private void Validate(Bitmap bm, Stack<Point>sp,int x, int y, Color Old_Color, Color New_Color)
         {
-            Color cx = bm.GetPixel(x, y);
-            if (cx == Old_Color)
+            Color pixelColor = bm.GetPixel(x, y);
+            if (pixelColor == Old_Color)
             {
                 sp.Push(new Point(x, y));
                     bm.SetPixel(x, y, New_Color);
@@ -165,7 +176,7 @@ namespace paintproje
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
 
-            //strokeSize = (int)numericUpDown1.Value;
+            strokeSize = (int)numericUpDown1.Value;
             
         }
 
@@ -189,34 +200,39 @@ namespace paintproje
         }
         private void Pic_MouseMove(object sender, MouseEventArgs e)
         {
+                if (paint)
+                {
+                    if (indexDrawing == VersionOfDrawing.dot)
+                    {
+                        penX = e.Location;
+                        makeUndoInfo(brushColor, strokeSize);
+                        g.FillEllipse(dot, penX.X - strokeSize / 2, penY.Y - strokeSize / 2, strokeSize, strokeSize);
+                        penPoints.Add(penX);
+                        penY = penX;
+
+                    }
+                    else if (indexDrawing == VersionOfDrawing.eraser)
+                    {
+                        penX = e.Location;
+                        makeUndoInfo(Color.White, strokeSize);
+                        g.FillEllipse(dotWhite, penX.X - strokeSize / 2, penY.Y - strokeSize / 2, strokeSize, strokeSize);
+                        penPoints.Add(penX);
+                        penY = penX;
+                    }
+
+                }
+                //pokrece Pic.Paint()
+                Pic.Refresh();
+
+                // bez ovog bude sve u gornjem levom cosku
+                x = e.X;
+                y = e.Y;
+
+                //bez ovoga nema animacije crtanja
+                endX = e.X - startX;
+                endY = e.Y - startY;
             
-            if (paint)
-            {
-                if (indexDrawing == VersionOfDrawing.dot)
-                {
-                    px = e.Location;
-
-                    g.FillEllipse(dot, px.X-strokeSize/2, py.Y-strokeSize/2, strokeSize, strokeSize);
-                    py = px;
-                   
-                }
-                else if(indexDrawing == VersionOfDrawing.eraser)
-                {
-                    px = e.Location;
-                    g.FillEllipse(dotWhite, px.X - strokeSize / 2, py.Y - strokeSize / 2, strokeSize, strokeSize);
-                    py = px;
-                    
-
-                }
-                
             }
-            
-            Pic.Refresh();
-            x = e.X;
-            y = e.Y;
-            sx = e.X - cx;
-            sy = e.Y - cy;
-        }
 
         private void btnUndo_Click(object sender, EventArgs e)
         {
@@ -226,40 +242,95 @@ namespace paintproje
 
         private void Pic_MouseUp(object sender, MouseEventArgs e)
         {
-            
+
             paint = false;
 
-            sx = x - cx;
-            sy = y - cy;
-            if (indexDrawing == VersionOfDrawing.elipse)
+            //endX = x - startX;
+            //endY = y - startY;
+            if ((int)indexDrawing > 2)
             {
-                g.DrawEllipse(p, cx, cy, sx, sy);
+                makeUndoInfo(drawingPen.Color, (int)drawingPen.Width);
             }
-            else if (indexDrawing == VersionOfDrawing.rectangle)
+            else
             {
-                g.DrawRectangle(p, cx, cy, sx, sy);
             }
-            else if (indexDrawing == VersionOfDrawing.line)
-            {
-                g.DrawLine(p, cx, cy, x, y);
-            }
+            PaintShapes();
+            //MessageBox.Show(drawingPen.Color.ToString());
 
-
-            NamestiUndo();
+            //MessageBox.Show(drawingPen.Color.ToString() + paint.ToString());
+            // MessageBox.Show("test");
         }
-        private void NamestiUndo()
+
+
+        private void makeUndoInfo(Color replacing, int drawingSize)
         {
-            for(int i = 0;i<undo.Length-1;i++)
-            {
-                undo[i] = undo[i + 1];
-            }
-            undo[undo.Length - 1] = (Bitmap)Pic.Image;
+            DrawedInformation info;
+            info.startX = startX;
+            info.startY = startY;
+            info.endX = endX;
+            info.endY = endY;
+            info.typeOfDrawing = indexDrawing;
+            info.replacedColor = bm.GetPixel(startX, startY);
+            info.replacingColor =  replacing;
+            info.size = drawingSize;
+            //info.pointArray = new Point[paintLocations.Count];
+            //for(int i = 0;i<info.pointArray.Length;i++)
+            //{
+            //    info.pointArray[i] = paintLocations[i];
+            //    paintLocations.Remove(paintLocations[i]);
+            //}
+            undoStack.Push(info);
         }
 
         private void IzvrsiUndo()
         {
-            indexOfUndo++;
-            Pic.Image = undo[undo.Length - indexOfUndo];
+         if(undoStack.Count > 0)
+            {
+                DrawedInformation previousDrawing = undoStack.Pop();
+                if((int)previousDrawing.typeOfDrawing > 2)
+                {
+                    ShapeUndo(previousDrawing);
+                }
+                else if((int)previousDrawing.typeOfDrawing < 3)
+                {
+                    BrushUndo(previousDrawing);
+                    if (undoStack.Count > 0)
+                    {
+                        DrawedInformation nextPrevDrawing = undoStack.Peek();
+                        if(nextPrevDrawing.typeOfDrawing == previousDrawing.typeOfDrawing)
+                        {
+                            IzvrsiUndo();
+                        }
+                    }
+                }
+                //redoStack.Push(previousDrawing);
+            }
+        }
+
+        private void BrushUndo(DrawedInformation i)
+        {
+            Brush tempBrush = new SolidBrush(i.replacedColor);
+                if(i.typeOfDrawing == VersionOfDrawing.dot)
+                {
+                    g.FillEllipse(tempBrush, i.startX - i.size / 2, i.startY - i.size / 2, i.size, i.size);
+                }
+            
+        }
+
+        private void ShapeUndo(DrawedInformation i)
+        {
+            drawingPen.Color = i.replacedColor;
+            startX = i.startX;
+            startY = i.startY;
+            endX = i.endX;
+            endY = i.endY;
+            indexDrawing = i.typeOfDrawing;
+            PaintShapes();
+            drawingPen.Color = i.replacingColor;
+            //MessageBox.Show("Hej!" + startX + "," + startY);
+            //MessageBox.Show("Hej!" + endX + "," + endY);
+            //MessageBox.Show("Hej!" + i.replacedColor);
+
         }
         private void BtnEraser_MouseClick(object sender, MouseEventArgs e)
         {
@@ -278,13 +349,15 @@ namespace paintproje
 
         struct DrawedInformation
         {
-            int startX;
-            int startY;
-            int widthX;
-            int lengthY;
-            VersionOfDrawing typeOfDrawing;
-            
+            public int startX;
+            public int startY;
+            public int endX;
+            public int endY;
+            public VersionOfDrawing typeOfDrawing;
+            public Color replacedColor;
+            public Color replacingColor;
+            public int size;
+            //public Point[] pointArray;
         }
     }
-    
-}
+   }

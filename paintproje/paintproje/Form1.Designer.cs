@@ -30,6 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnUndo = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.BtnPencil = new System.Windows.Forms.Button();
@@ -42,8 +43,6 @@
             this.BtnClear = new System.Windows.Forms.Button();
             this.BtnSave = new System.Windows.Forms.Button();
             this.Pic = new System.Windows.Forms.PictureBox();
-            this.btnUndo = new System.Windows.Forms.Button();
-
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -72,11 +71,24 @@
             this.panel1.Size = new System.Drawing.Size(682, 45);
             this.panel1.TabIndex = 0;
             // 
+            // btnUndo
+            // 
+            this.btnUndo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnUndo.ForeColor = System.Drawing.SystemColors.Control;
+            this.btnUndo.Location = new System.Drawing.Point(610, 2);
+            this.btnUndo.Margin = new System.Windows.Forms.Padding(2);
+            this.btnUndo.Name = "btnUndo";
+            this.btnUndo.Size = new System.Drawing.Size(64, 19);
+            this.btnUndo.TabIndex = 9;
+            this.btnUndo.Text = "Undo";
+            this.btnUndo.UseVisualStyleBackColor = true;
+            this.btnUndo.Click += new System.EventHandler(this.btnUndo_Click);
+            // 
             // button1
             // 
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.ForeColor = System.Drawing.SystemColors.Control;
-            this.button1.Location = new System.Drawing.Point(434, 3);
+            this.button1.Location = new System.Drawing.Point(360, -2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(65, 49);
             this.button1.TabIndex = 9;
@@ -86,14 +98,14 @@
             // 
             // numericUpDown1
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(519, 17);
+            this.numericUpDown1.Location = new System.Drawing.Point(454, 12);
             this.numericUpDown1.Minimum = new decimal(new int[] {
             10,
             0,
             0,
             0});
             this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(45, 22);
+            this.numericUpDown1.Size = new System.Drawing.Size(45, 20);
             this.numericUpDown1.TabIndex = 2;
             this.numericUpDown1.Value = new decimal(new int[] {
             10,
@@ -235,23 +247,11 @@
             this.Pic.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Pic_MouseMove);
             this.Pic.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Pic_MouseUp);
             // 
-            // btnUndo
-            // 
-            this.btnUndo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnUndo.ForeColor = System.Drawing.SystemColors.Control;
-            this.btnUndo.Location = new System.Drawing.Point(610, 2);
-            this.btnUndo.Margin = new System.Windows.Forms.Padding(2);
-            this.btnUndo.Name = "btnUndo";
-            this.btnUndo.Size = new System.Drawing.Size(64, 19);
-            this.btnUndo.TabIndex = 9;
-            this.btnUndo.Text = "Undo";
-            this.btnUndo.UseVisualStyleBackColor = true;
-            this.btnUndo.Click += new System.EventHandler(this.btnUndo_Click);
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);            
+            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
             // Form1
             // 
