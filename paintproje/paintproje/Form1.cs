@@ -258,7 +258,6 @@ namespace paintproje
             //MessageBox.Show(drawingPen.Color.ToString());
 
             //MessageBox.Show(drawingPen.Color.ToString() + paint.ToString());
-            // MessageBox.Show("test");
         }
 
 
